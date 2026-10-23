@@ -1,0 +1,35 @@
+trigger:
+  - main
+
+pool:
+  name: testlab-pool
+
+variables:
+  TESTLAB_URL: https://durango-dms.andolasoft.co.in
+  TESTLAB_PROJECT: bd1069318a3d03fb0836ff5986406470
+
+steps:
+  - script: |
+      python3 -m venv .venv
+      .venv/bin/pip install -r requirements.txt
+      .venv/bin/pytest --junitxml=results.xml
+    displayName: Run tests
+    continueOnError: true
+
+  - task: PublishTestResults@2
+    condition: always()
+    inputs:
+      testResultsFormat: JUnit
+      testResultsFiles: results.xml
+
+  - script: |
+      curl -sS --fail-with-body -X POST "$TESTLAB_URL/test-lab/api/automation/results" \
+        -H "Authorization: Bearer $TESTLAB_TOKEN" \
+        -F project_id="$TESTLAB_PROJECT" \
+        -F name="Azure #$(Build.BuildNumber)" \
+        -F source_ref="$(System.CollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)" \
+        -F junit=@results.xml
+    displayName: Publish to Test Lab
+    condition: always()
+    env:
+      TESTLAB_TOKEN: $(TESTLAB_TOKEN)

@@ -5,4 +5,4 @@ Sample repo that runs pytest in GitHub Actions and publishes JUnit results to Or
 Required repo settings:
 
 - Secret `TESTLAB_TOKEN` — Test Lab automation token
-- Variable `TESTLAB_PROJECT_ID` — Test Lab project id
+- Variable `TESTLAB_PROJECT_NAME` — Test Lab project name

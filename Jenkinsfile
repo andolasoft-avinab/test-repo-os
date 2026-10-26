@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         TESTLAB_URL     = 'https://durango-dms.andolasoft.co.in'
-        TESTLAB_PROJECT = 'bd1069318a3d03fb0836ff5986406470'
+        TESTLAB_PROJECT_NAME = 'bd1069318a3d03fb0836ff5986406470'
     }
 
     stages {
@@ -27,7 +27,7 @@ pipeline {
                 sh '''
                     curl -sS --fail-with-body -X POST "$TESTLAB_URL/test-lab/api/automation/results" \
                       -H "Authorization: Bearer $TESTLAB_TOKEN" \
-                      -F project_id="$TESTLAB_PROJECT" \
+                      -F project_id="$TESTLAB_PROJECT_NAME" \
                       -F name="Jenkins #$BUILD_NUMBER" \
                       -F source_ref="$BUILD_URL" \
                       -F junit=@results.xml

@@ -6,7 +6,7 @@ pool:
 
 variables:
   TESTLAB_URL: https://durango-dms.andolasoft.co.in
-  TESTLAB_PROJECT: bd1069318a3d03fb0836ff5986406470
+  TESTLAB_PROJECT_NAME: bd1069318a3d03fb0836ff5986406470
 
 steps:
   - script: |
@@ -25,7 +25,7 @@ steps:
   - script: |
       curl -sS --fail-with-body -X POST "$TESTLAB_URL/test-lab/api/automation/results" \
         -H "Authorization: Bearer $TESTLAB_TOKEN" \
-        -F project_id="$TESTLAB_PROJECT" \
+        -F project_id="$TESTLAB_PROJECT_NAME" \
         -F name="Azure #$(Build.BuildNumber)" \
         -F source_ref="$(System.CollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)" \
         -F junit=@results.xml
